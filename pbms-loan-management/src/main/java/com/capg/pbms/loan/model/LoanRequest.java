@@ -85,4 +85,5 @@ public class LoanRequest {
 				+ loanEmi + ", CreditScore=" + CreditScore + "]";
 	}
 	
+	
 }

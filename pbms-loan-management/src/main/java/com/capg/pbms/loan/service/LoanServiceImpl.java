@@ -1,6 +1,7 @@
 package com.capg.pbms.loan.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,14 @@ public class LoanServiceImpl implements ILoanService {
 		return repo.getOne(accountId);
 	}
 
+
 	@Override
 	public LoanRequest addLoan(long accountId,int creditScore,double loanAmount,LoanRequest loanrequest) {
 
 		if(!(isValidAccountId(accountId))==true) {
 			throw new AccountException("Invalid accountID");
 		}
-		if(creditScore<700 && (loanAmount<100000 || loanAmount>10000000)) {
+		if(creditScore<670 && (loanAmount<100000 || loanAmount>10000000)) {
 			throw new AccountException("can't approve loan request due to less creditScore");
 		}
 		long id=Long.parseLong(String.valueOf(Math.abs(new Random().nextLong())).substring(0, 12));
@@ -58,10 +60,34 @@ public class LoanServiceImpl implements ILoanService {
 		//ADD CODE TO CALL ADD METHOD IN TRANSACTION MODULE
 				return repo1.save(loanrequest);
 	}
-	
-	public LoanRequest getLoanById(long accountId) {
-		return repo1.getOne(accountId);
+
+	/*
+	 * @Override public LoanRequest addLoan(long accountId, int creditScore, double
+	 * loanAmount, LoanRequest loanrequest) {
+	 * 
+	 * BankAccountDetails bank =
+	 * rt.getForObject("http://PBMS-ACCOUNT-MANAGEMENT/pecuniabank/get/accNum/" +
+	 * accountId,BankAccountDetails.class); // if(accountId!=bank.getAccNumber()) {
+	 * // throw new AccountNotFoundException("Account number not found"); // }
+	 * loanrequest.setLoanRequestId(bank.getAccNumber()); if (creditScore < 670 &&
+	 * (loanAmount < 100000 || loanAmount > 10000000)) {
+	 * loanrequest.setLoanStatus("Rejected"); return loanrequest; }
+	 * 
+	 * long id = Long.parseLong(String.valueOf(Math.abs(new
+	 * Random().nextLong())).substring(0, 12)); return repo1.save(loanrequest); }
+	 */
+	public LoanRequest getLoanById(long accountId) throws AccountException
+	{
+	     if (!repo1.existsById(accountId)) 
+	        {
+			      throw new AccountException("account number doesn't exists");
+	        }
+		  return repo1.getOne(accountId);
 	}
+	
+
+
+
 	
 	public boolean isValidAccountId(long accountId) {
 		String str=String.valueOf(accountId);
@@ -71,5 +97,12 @@ public class LoanServiceImpl implements ILoanService {
 		
 	throw new AccountException("Invalid Account Id");	 
 	}
- 
+
+	public List<LoanRequest> getAllLoans()
+	{
+		return repo1.findAll();
+	}
+
+	
+	
 }
