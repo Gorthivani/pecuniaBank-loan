@@ -22,12 +22,12 @@ class PbmsLoanMsApplicationTests {
 			assertEquals(true, service.isValidAccountId(123456789012L));
 		} 
 		 
-//		@Test
-//		void testAddLoan1() {
-//			LoanRequest loanrequest=new LoanRequest(510744551037L, 2, "house loan", 3, 300.00, "Accepted", 500.00, 680);
-//			assertEquals("Rejected",service.addLoan(369487823202L, 650, 10000, loanrequest).getLoanStatus());
-//		}
-//		
+		@Test
+		void testAddLoan1() {
+			LoanRequest loanrequest=new LoanRequest(510744551037L, 2, "house loan", 3, 300.00, "Accepted", 500.00, 680);
+			assertEquals("Rejected",service.addLoan(369487823202L, 650, 10000, loanrequest).getLoanStatus());
+		}
+		
 		@Test
 		void testAddLoan2() {
 			LoanRequest loanrequest=new LoanRequest(510744551037L, 2, "house loan", 3, 300.00, "Accepted", 500.00, 680);
